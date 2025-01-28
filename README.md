@@ -1,13 +1,10 @@
-### Phaser starter repo
+### Procedural Map Generation
 
-A template for coding in the Phaser framework. 
+A procedurally generated tile map using perlin noise.
 
-Includes some tutorial code to demonstrate asset loading, changing between scenes, and using custom classes.
+Use the 'R' key to regenerate using a new noise seed.
+
+Use ',' to shrink the noise window (zoom in) and '.' to grow the noise window (zoom out).
 
 
 
-// more recommended resources 
-- thomas's web browser project
-- tiled tutorial
-- pahser docs
-- good phaser docs
