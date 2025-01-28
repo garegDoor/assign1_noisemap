@@ -31,16 +31,33 @@ class sceneName extends Phaser.Scene {
 
         
         // initialize scaling var
-        this.noiseWindowSize = 10;
+        this.noiseWindowSize = 2;
 
         // detect when pressing keys
-        this.input.keyboard.on('keydown-R', this.generateTiles, this);
+        this.input.keyboard.on('keydown-R', this.regenerateTiles, this);
+        
+        document.addEventListener('keydown', (event) => {
+            if (event.key == ',') {
+                this.shrinkNoiseWindow();
+            }
+            else if (event.key == '.') {
+                this.growNoiseWindow();
+            }
+        });
 
         // Do first pass generation
         this.generateTiles();
     }
 
     update() {
+    }
+
+    regenerateTiles()
+    {
+        // create new seed
+        noise.seed(Math.random());
+
+        this.generateTiles();
     }
 
     generateTiles()
@@ -52,8 +69,7 @@ class sceneName extends Phaser.Scene {
         //this.terrainLayer.putTileAt(19, 1, 0);
         //this.terrainLayer.putTileAt(203, 2, 0);
 
-        // create new seed
-        noise.seed(Math.random());
+        
 
         for (var y = 0; y < this.map.height; y++)
         {
@@ -63,13 +79,13 @@ class sceneName extends Phaser.Scene {
             {
                 var ratioX = x / this.map.width;
 
-                var r = noise.perlin(ratioX * this.noiseWindowSize, ratioY * this.noiseWindowSize);
+                var r = noise.perlin2(ratioX * this.noiseWindowSize, ratioY * this.noiseWindowSize);
 
-                if (r >= 0.5)
+                if (r >= 0.35)
                 {
                     var tileID = 24; // grass
                 }
-                else if (r >= 0.25)
+                else if (r >= 0.1)
                 {
                     var tileID = 19; // sand
                 }
@@ -83,4 +99,15 @@ class sceneName extends Phaser.Scene {
         }
     }
 
+    shrinkNoiseWindow() 
+    {
+        this.noiseWindowSize = this.noiseWindowSize * 0.8;
+        this.generateTiles();
+    }
+
+    growNoiseWindow()
+    {
+        this.noiseWindowSize = this.noiseWindowSize * 1.2;
+        this.generateTiles();
+    }
 }
